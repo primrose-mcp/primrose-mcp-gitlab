@@ -1,0 +1,57 @@
+{
+  // ==========================================================================
+  // GitLab MCP Server - Wrangler Configuration
+  // ==========================================================================
+  //
+  // MULTI-TENANT ARCHITECTURE:
+  // This server supports multiple tenants. Credentials are passed via request
+  // headers, NOT stored as wrangler secrets. This allows a single deployment
+  // to serve multiple customers.
+  //
+  // AUTHENTICATION:
+  // GitLab supports two authentication methods:
+  // 1. Personal Access Token (PRIVATE-TOKEN header)
+  // 2. OAuth Access Token (Authorization: Bearer header)
+  // ==========================================================================
+
+  "name": "primrose-mcp-gitlab",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-12-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // ==========================================================================
+  // Environment Variables (server-wide configuration, not per-tenant)
+  // ==========================================================================
+  "vars": {
+    "CHARACTER_LIMIT": "50000",
+    "DEFAULT_PAGE_SIZE": "20",
+    "MAX_PAGE_SIZE": "100"
+  },
+
+  // ==========================================================================
+  // Multi-Tenant Authentication (via Request Headers)
+  // ==========================================================================
+  //
+  // Tenant credentials are passed via HTTP headers on each request:
+  //
+  // Required (one of):
+  //   X-GitLab-Token: GitLab Personal Access Token
+  //   X-GitLab-Access-Token: OAuth access token
+  //
+  // Optional:
+  //   X-GitLab-Base-URL: Override the default GitLab API base URL
+  //                      (for self-hosted GitLab instances)
+  //                      Default: https://gitlab.com
+
+  // ==========================================================================
+  // Development
+  // ==========================================================================
+  "dev": {
+    "port": 8787,
+    "local_protocol": "http"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}
